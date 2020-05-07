@@ -1,0 +1,45 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use Ngindock;
+use Ngindock::Log;
+use Getopt::Long;
+
+my $config_file = 'ngindock.yaml';
+my $verbose = 0;
+GetOptions(
+    'c|config=s' => \$config_file,
+    'v|verbose' => sub { $verbose++ },
+    'h|help' => sub { help() },
+    'u|usage' => sub { usage(1) },
+) or help();
+
+Ngindock::Log->register;
+Ngindock::Log->level($verbose);
+
+my $cfg = Ngindock::Config->new($config_file);
+Ngindock->new(cfg => $cfg)->run;
+
+sub help {
+    usage(0);
+
+    print qq{
+Options:
+    -c,--config FILE    Set config file to read from.
+    -v,--verbose        Enable verbose output. Specify twice for more.
+
+Ngindock is developed by James Stanley <james\@incoherency.co.uk>.
+};
+
+    exit 0;
+}
+
+sub usage {
+    my ($exit) = @_;
+
+    print "Usage: ngindock [-c config] [-v -v]\n";
+
+    exit 0 if $exit;
+}
