@@ -2,7 +2,7 @@
 
 > *Zero-downtime Docker container deployments with nginx.*
 
-Ngindock starts your new container on a different port to the old one, waits for it to look healthy (by HTTP 200 status check),
+Ngindock starts a new container on a different port to the old one, waits for the new container to look healthy (by HTTP 200 status check),
 then rewrites your `nginx.conf` to direct traffic to the new port, and finally stops the old container and renames the
 new one in its place.
 
