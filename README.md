@@ -153,6 +153,8 @@ might still be being handled by the old container.
 
 There's not yet any way to run Ngindock in a "dry-run" mode that would tell you what it would do without doing it.
 
+The `health_url` health-check is not yet implemented.
+
 The code that rewrites `nginx.conf` is really bad. It will strip all your comments. If the "server" directives under your "upstream"
 look a bit funny then it will mess up the file in confusing ways.
 
