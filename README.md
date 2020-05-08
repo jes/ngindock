@@ -160,6 +160,10 @@ The `health_url` health-check is not yet implemented.
 The code that rewrites `nginx.conf` is really bad. It will strip all your comments. If the "server" directives under your "upstream"
 look a bit funny then it will mess up the file in confusing ways.
 
+It should perhaps be packaged as a Docker image that you then connect to your nginx config and docker socket, and perform a hot-deployment
+with:
+
+    $ docker run --rm -v /etc/nginx/conf.d/app.conf:/nginx.conf -v /var/run/docker.sock:/var/run/docker.sock ngindock
 
 ## Contact
 
