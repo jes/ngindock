@@ -111,7 +111,8 @@ Example:
 
 ### docker_opts (optional)
 
-Extra parameters you want to pass to `docker run`.
+Extra parameters you want to pass to `docker run`. This will be split on space characters
+before being passed as multiple arguments.
 
 Example:
 
