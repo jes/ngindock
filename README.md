@@ -16,6 +16,8 @@ For now, just check out https://github.com/jes/ngindock in your home directory, 
 
     $ PERL5LIB=lib ./ngindock
 
+CPAN module dependencies are `Getopt::Long`, `IPC::Run`, and `YAML`.
+
 ## Usage
 
 This documentation assumes that you are running nginx on the host system and not inside a container. If you're running
