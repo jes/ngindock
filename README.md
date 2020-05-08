@@ -19,7 +19,7 @@ For now, just check out https://github.com/jes/ngindock in your home directory, 
 This documentation assumes that you are running nginx on the host system and not inside a container. If you're running
 it inside a container than you'll most likely want to run Ngindock inside the same container as nginx.
 
-Create an `ngindock.yaml` file for the project you want to hot-deply, looking something like this:
+Create an `ngindock.yaml` file for the project you want to hot-deploy, looking something like this:
 
     nginx_conf: /etc/nginx/conf.d/app.conf
     nginx_upstream: app
