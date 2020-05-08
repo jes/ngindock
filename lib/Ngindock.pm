@@ -7,6 +7,7 @@ use Ngindock::Config;
 use Ngindock::Log;
 use Ngindock::Nginx;
 use Ngindock::Docker;
+use LWP::UserAgent;
 
 sub new {
     my ($pkg, %opts) = @_;
@@ -30,7 +31,7 @@ sub run {
 
     # select next port number from list
     my $new_port = $self->next_port($cur_port);
-    die "new port $new_port same as old port" if $new_port == $old_port;
+    die "new port $new_port same as old port" if $new_port == $cur_port;
     Ngindock::Log->log(1, "plan to move from port $cur_port to $new_port");
 
     # start the new docker container
@@ -38,6 +39,7 @@ sub run {
     $self->start_new_container($new_port);
 
     # wait for new container to become ready
+    Ngindock::Log->log(1, "wait for container health check...");
     $self->wait_healthy($new_port);
 
     # update nginx config to direct traffic to new container
@@ -96,7 +98,17 @@ sub wait_healthy {
     my ($self, $port) = @_;
 
     if ($self->{cfg}{health_url}) {
-        Ngindock::Log->log(2, "TODO: health_url not yet implemented (should wait for 200 status from http://localhost:$port$self->{cfg}{health_url}");
+        my $url = "http://localhost:$port$self->{cfg}{health_url}";
+        my $ua = LWP::UserAgent->new(
+            agent => 'ngindock',
+        );
+
+        while (1) {
+            my $code = $ua->get($url)->code;
+            Ngindock::Log->log(2, "GET $url: $code");
+            last if $code == 200;
+            sleep 1;
+        }
     }
 
     if ($self->{cfg}{health_sleep}) {
