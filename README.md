@@ -76,7 +76,7 @@ Example:
 
 ### container_port (required)
 
-The port number on your container that you want traffic to come into.
+The port number on your container that you want traffic to come to.
 
 Example:
 
