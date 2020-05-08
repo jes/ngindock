@@ -84,7 +84,19 @@ Example:
 
 ### image_name (required)
 
+The name of the Docker image to use when creating containers.
+
+Example:
+
+    image_name: app_image
+
 ### container_name (required)
+
+The name to use for the Docker container to be created, and for the old container to be destroyed.
+
+Example:
+
+    container_name: app_container
 
 ### health_url (optional)
 
