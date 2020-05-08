@@ -35,7 +35,8 @@ Create an `ngindock.yaml` file for the project you want to hot-deploy, looking s
 
 See below for documentation of the individual fields.
 
-To get Ngindock to create your new container but not tear down the existing one, run with `--dry-run`:
+To get Ngindock to create your new container but not tear down the existing one (so that you can test that it is
+working correctly), run with `--dry-run`:
 
     $ ngindock --dry-run
 
