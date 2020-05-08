@@ -6,6 +6,8 @@ Ngindock starts a new container on a different port to the old one, waits for th
 then rewrites your `nginx.conf` to direct traffic to the new port, and finally stops the old container and renames the
 new one in its place.
 
+Please see the "Caveats" section before wielding this against anything important.
+
 ## Installation
 
 TODO: Update this to something more "production".
@@ -127,6 +129,31 @@ before being passed as multiple arguments.
 Example:
 
     docker_opts: "--device=/dev/snd:/dev/snd"
+
+## Caveats
+
+It assumes it can run `nginx -c $nginx_conf -s reload` to reload nginx.
+
+It operates Docker by running `docker run ...` etc rather than using the API.
+
+It assumes your upstream directive looks basically like this:
+
+    upstream app {
+        server http://127.0.0.1:3000;
+    }
+
+In particular, it is currently hard-coded to require "http://127.0.0.1:" before the port number.
+
+Installation is not really implemented yet, you just have to manually copy the contents of `lib/` around if you want to install it.
+
+Shelling out to `nginx` and `docker` results in pollution of stdout/stderr.
+
+It stops the old container immediately after directing traffic to the new one, without waiting to account for any in-flight sessions that
+might still be being handled by the old container.
+
+The code that rewrites `nginx.conf` is really bad. It will strip all your comments. If the "server" directives under your "upstream"
+look a bit funny then it will mess up the file in confusing ways.
+
 
 ## Contact
 
