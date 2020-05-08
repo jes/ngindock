@@ -66,7 +66,7 @@ Example:
 
 ### ports (required)
 
-The port numbers you want to use to direct traffic to your application. Typically there would be
+The host port numbers you want to use to direct traffic to your application. Typically there would be
 exactly 2 here, but you are allowed to specify more than 2, and if you specify more then they'll
 be used in sequence.
 
