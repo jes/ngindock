@@ -30,6 +30,7 @@ sub run {
 
     # select next port number from list
     my $new_port = $self->next_port($cur_port);
+    die "new port $new_port same as old port" if $new_port == $old_port;
     Ngindock::Log->log(1, "plan to move from port $cur_port to $new_port");
 
     # start the new docker container
