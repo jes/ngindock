@@ -151,6 +151,8 @@ Shelling out to `nginx` and `docker` results in pollution of stdout/stderr.
 It stops the old container immediately after directing traffic to the new one, without waiting to account for any in-flight sessions that
 might still be being handled by the old container.
 
+There's not yet any way to run Ngindock in a "dry-run" mode that would tell you what it would do without doing it.
+
 The code that rewrites `nginx.conf` is really bad. It will strip all your comments. If the "server" directives under your "upstream"
 look a bit funny then it will mess up the file in confusing ways.
 
