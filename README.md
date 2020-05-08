@@ -35,11 +35,9 @@ To perform a hot-deploy, simply run:
 
     $ ngindock
 
-Or:
+Or, to specify a config file name:
 
     $ ngindock -c ngindock-production.yaml
-
-To specify a config file name.
 
 Add `-v` or `-v -v` to get more verbose output.
 
