@@ -1,0 +1,7 @@
+nginx_conf: /etc/nginx/conf.d/app.conf
+nginx_upstream: app
+ports: [3000,3001]
+container_port: 8080
+image_name: app_image
+container_name: app_container
+health_url: /health-check
