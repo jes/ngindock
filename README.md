@@ -114,7 +114,7 @@ If this field is not present, then the health check will be skipped.
 
 Example:
 
-    health_url: /health-check
+    health_url: /
 
 ### health_sleep (optional)
 
