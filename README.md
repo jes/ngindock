@@ -33,7 +33,7 @@ Create an `ngindock.yaml` file for the project you want to hot-deploy, looking s
 
 See below for documentation of the individual fields.
 
-To perform a hot-deploy, simply run:
+To perform a hot-deploy, simply pull (or build) your updated image and run:
 
     $ ngindock
 
