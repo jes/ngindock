@@ -157,5 +157,5 @@ look a bit funny then it will mess up the file in confusing ways.
 
 ## Contact
 
-Ngindock was developed by James Stanley. You can email me on james@incoherency.co.uk or
+Ngindock is developed by James Stanley. You can email me on james@incoherency.co.uk or
 read my blog at https://incoherency.co.uk/.
