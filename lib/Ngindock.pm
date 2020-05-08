@@ -48,7 +48,11 @@ sub run {
         $self->{nginx}->rewrite_upstream($self->{cfg}{nginx_upstream}, $cur_port, $new_port);
         $self->{nginx}->reload;
 
-        # TODO: wait for existing sessions to stop going to old container?
+        # wait for existing sessions to stop going to old container?
+        if ($self->{cfg}{grace_period}) {
+            Ngindock::Log->log(1, "sleep for grace_period of $self->{cfg}{grace_period} secs...");
+            sleep $self->{cfg}{grace_period};
+        }
 
         # stop & remove the old docker container
         Ngindock::Log->log(1, "remove old container if it exists...");

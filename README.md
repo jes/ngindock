@@ -135,6 +135,18 @@ Example:
 
     health_sleep: 5
 
+### grace_period (optional)
+
+A number of seconds to sleep between the new container becoming healthy and stopping the old
+container. This is to allow for completion of long-running requests that are still being handled
+by the old container.
+
+If this field is not present, then no sleep will occur.
+
+Example:
+
+    grace_period: 30
+
 ### docker_opts (optional)
 
 Extra parameters you want to pass to `docker run`. This will be split on space characters
@@ -161,9 +173,6 @@ In particular, it is currently hard-coded to require "http://127.0.0.1:" before 
 Installation is not really implemented yet, you just have to manually copy the contents of `lib/` around if you want to install it.
 
 Shelling out to `nginx` and `docker` results in pollution of stdout/stderr.
-
-It stops the old container immediately after directing traffic to the new one, without waiting to account for any in-flight sessions that
-might still be being handled by the old container.
 
 The code that rewrites `nginx.conf` is really bad. It will strip all your comments. If the "server" directives under your "upstream"
 look a bit funny then it will mess up the file in confusing ways.
