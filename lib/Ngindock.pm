@@ -42,20 +42,24 @@ sub run {
     Ngindock::Log->log(1, "wait for container health check...");
     $self->wait_healthy($new_port);
 
-    # update nginx config to direct traffic to new container
-    Ngindock::Log->log(1, "update nginx to direct traffic to port $new_port...");
-    $self->{nginx}->rewrite_upstream($self->{cfg}{nginx_upstream}, $cur_port, $new_port);
-    $self->{nginx}->reload;
+    if (!$self->{dry_run}) {
+        # update nginx config to direct traffic to new container
+        Ngindock::Log->log(1, "update nginx to direct traffic to port $new_port...");
+        $self->{nginx}->rewrite_upstream($self->{cfg}{nginx_upstream}, $cur_port, $new_port);
+        $self->{nginx}->reload;
 
-    # TODO: wait for existing sessions to stop going to old container?
+        # TODO: wait for existing sessions to stop going to old container?
 
-    # stop & remove the old docker container
-    Ngindock::Log->log(1, "remove old container if it exists...");
-    Ngindock::Docker->kill($self->{cfg}{container_name});
+        # stop & remove the old docker container
+        Ngindock::Log->log(1, "remove old container if it exists...");
+        Ngindock::Docker->kill($self->{cfg}{container_name});
 
-    # rename new container
-    Ngindock::Log->log(1, "rename " . $self->new_container_name . " to $self->{cfg}{container_name}...");
-    Ngindock::Docker->rename($self->new_container_name, $self->{cfg}{container_name});
+        # rename new container
+        Ngindock::Log->log(1, "rename " . $self->new_container_name . " to $self->{cfg}{container_name}...");
+        Ngindock::Docker->rename($self->new_container_name, $self->{cfg}{container_name});
+    } else {
+        Ngindock::Log->log(0, "--dry-run: your new container " . $self->new_container_name . " is at http://localhost:$new_port");
+    }
 
     Ngindock::Log->log(2, "ngindock finishes");
 }

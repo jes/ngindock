@@ -9,8 +9,10 @@ use Getopt::Long;
 
 my $config_file = 'ngindock.yaml';
 my $verbosity = 0;
+my $dry_run = 0;
 GetOptions(
     'c|config=s' => \$config_file,
+    'n|dry-run' => \$dry_run,
     'v|verbose' => sub { $verbosity++ },
     'h|help' => sub { help() },
     'u|usage' => sub { usage(1) },
@@ -20,7 +22,7 @@ Ngindock::Log->register;
 Ngindock::Log->level($verbosity);
 
 my $cfg = Ngindock::Config->new($config_file);
-Ngindock->new(cfg => $cfg)->run;
+Ngindock->new(cfg => $cfg, dry_run => $dry_run)->run;
 
 sub help {
     usage(0);
@@ -28,6 +30,7 @@ sub help {
     print qq{
 Options:
     -c,--config FILE    Set config file to read from.
+    -n,--dry-run        Create the new container but don't redirect traffic.
     -v,--verbose        Enable verbose output. Specify twice for more.
 
 Ngindock is developed by James Stanley <james\@incoherency.co.uk>.
