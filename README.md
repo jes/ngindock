@@ -50,6 +50,13 @@ Or, to specify a config file name:
 
 Add `-v` or `-v -v` to get more verbose output.
 
+    Usage: ngindock [-c config] [-n] [-v -v]
+
+    Options:
+        -c,--config FILE    Set config file to read from.
+        -n,--dry-run        Create the new container but don't redirect traffic.
+        -v,--verbose        Enable verbose output. Specify twice for more.
+
 ## Configuration
 
 The configuration is in a YAML file, by default read from `ngindock.yaml`.
