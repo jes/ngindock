@@ -42,7 +42,7 @@ Ngindock is developed by James Stanley <james\@incoherency.co.uk>.
 sub usage {
     my ($exit) = @_;
 
-    print "Usage: ngindock [-c config] [-v -v]\n";
+    print "Usage: ngindock [-c config] [-n] [-v -v]\n";
 
     exit 0 if $exit;
 }
