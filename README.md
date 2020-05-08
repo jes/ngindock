@@ -1,4 +1,4 @@
-# ngindock
+# Ngindock
 
 > *Zero-downtime Docker container deployments with nginx.*
 
