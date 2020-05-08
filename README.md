@@ -134,7 +134,7 @@ Example:
 
 It assumes it can run `nginx -c $nginx_conf -s reload` to reload nginx.
 
-It operates Docker by running `docker run ...` etc rather than using the API.
+It operates Docker by running `docker run ...` etc. rather than using the API.
 
 It assumes your upstream directive looks basically like this:
 
