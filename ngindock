@@ -8,16 +8,16 @@ use Ngindock::Log;
 use Getopt::Long;
 
 my $config_file = 'ngindock.yaml';
-my $verbose = 0;
+my $verbosity = 0;
 GetOptions(
     'c|config=s' => \$config_file,
-    'v|verbose' => sub { $verbose++ },
+    'v|verbose' => sub { $verbosity++ },
     'h|help' => sub { help() },
     'u|usage' => sub { usage(1) },
 ) or help();
 
 Ngindock::Log->register;
-Ngindock::Log->level($verbose);
+Ngindock::Log->level($verbosity);
 
 my $cfg = Ngindock::Config->new($config_file);
 Ngindock->new(cfg => $cfg)->run;
