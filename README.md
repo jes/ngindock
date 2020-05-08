@@ -158,6 +158,8 @@ There's not yet any way to run Ngindock in a "dry-run" mode that would tell you 
 The code that rewrites `nginx.conf` is really bad. It will strip all your comments. If the "server" directives under your "upstream"
 look a bit funny then it will mess up the file in confusing ways.
 
+We'd probably want to copy the docker config of the existing container instead of having to put everything in `docker_opts`.
+
 It should perhaps be packaged as a Docker image that you then connect to your nginx config and docker socket, and perform a hot-deployment
 with:
 
