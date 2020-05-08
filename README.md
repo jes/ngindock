@@ -117,3 +117,8 @@ before being passed as multiple arguments.
 Example:
 
     docker_opts: "--device=/dev/snd:/dev/snd"
+
+## Contact
+
+Ngindock was developed by James Stanley. You can email me on james@incoherency.co.uk or
+read my blog at https://incoherency.co.uk/.
