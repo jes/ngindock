@@ -169,6 +169,8 @@ with:
 
     $ docker run --rm -v ngindock.yaml:/ngindock.yaml -v /etc/nginx/conf.d/app.conf:/nginx.conf -v /var/run/docker.sock:/var/run/docker.sock ngindock
 
+Should probably have automated testing.
+
 ## Contact
 
 Ngindock is developed by James Stanley. You can email me on james@incoherency.co.uk or
