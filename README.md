@@ -16,7 +16,7 @@ For now, just check out https://github.com/jes/ngindock in your home directory, 
 
     $ PERL5LIB=lib ./ngindock
 
-CPAN module dependencies are `Getopt::Long`, `IPC::Run`, `LWP::UserAgent`, and `YAML`.
+CPAN module dependencies are `Getopt::Long`, `IPC::Run`, `LWP::UserAgent`, and `YAML::XS`.
 
 ## Usage
 
