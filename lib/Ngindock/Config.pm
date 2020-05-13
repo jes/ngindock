@@ -6,7 +6,7 @@ use warnings;
 use YAML::XS;
 
 my @CONFIG_FIELDS = qw(
-    nginx_conf nginx_upstream ports container_port health_url health_sleep docker_opts image_name container_name grace_period
+    nginx_conf nginx_upstream ports container_port health_url health_sleep docker_opts image_name container_name grace_period nginx_opts
 );
 my @REQUIRED_FIELDS = qw(
     nginx_conf nginx_upstream ports container_port image_name container_name

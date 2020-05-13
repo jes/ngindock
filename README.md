@@ -156,6 +156,15 @@ Example:
 
     docker_opts: "--device=/dev/snd:/dev/snd"
 
+### nginx_opts (optional)
+
+Extra parameters you want to pass to `nginx -s reload`. This will be split on space
+characters before being passed as multiple arguments.
+
+Example:
+
+    nginx_opts: "-p ."
+
 ## Caveats
 
 It assumes it can run `nginx -c $nginx_conf -s reload` to reload nginx.
@@ -186,6 +195,8 @@ with:
     $ docker run --rm -v ngindock.yaml:/ngindock.yaml -v /etc/nginx/conf.d/app.conf:/nginx.conf -v /var/run/docker.sock:/var/run/docker.sock ngindock
 
 Should probably have automated testing.
+
+Config options should be listed in a more-sensible order in the documentation.
 
 ## Contact
 

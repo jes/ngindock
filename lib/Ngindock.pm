@@ -46,7 +46,7 @@ sub run {
         # update nginx config to direct traffic to new container
         Ngindock::Log->log(1, "update nginx to direct traffic to port $new_port...");
         $self->{nginx}->rewrite_upstream($self->{cfg}{nginx_upstream}, $cur_port, $new_port);
-        $self->{nginx}->reload;
+        $self->{nginx}->reload($self->{cfg}{nginx_opts});
 
         # wait for existing sessions to stop going to old container?
         if ($self->{cfg}{grace_period}) {

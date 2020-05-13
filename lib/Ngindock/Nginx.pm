@@ -95,9 +95,9 @@ sub rewrite_upstream {
 }
 
 sub reload {
-    my ($self) = @_;
+    my ($self, $opts_str) = @_;
 
-    my @cmd = ("nginx", "-c", $self->{file}, "-s", "reload");
+    my @cmd = ("nginx", (split / /, $opts_str||''), "-c", $self->{file}, "-s", "reload");
     my $rv = system(@cmd);
     die "bad exit status from [" . join(' ', @cmd) . "]\n" if $rv;
 }
