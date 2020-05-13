@@ -1,0 +1,8 @@
+nginx_conf: ./nginx.conf
+nginx_upstream: app
+nginx_opts: '-p .'
+ports: [3001,3002]
+container_port: 3000
+image_name: ngindock_demo_app
+container_name: ngindock_demo_app
+health_url: /

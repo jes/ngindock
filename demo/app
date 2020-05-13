@@ -1,0 +1,10 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use Mojolicious::Lite;
+
+get '/' => sub { shift->render(text => "Hello!\n") };
+
+app->start;
