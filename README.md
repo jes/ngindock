@@ -165,9 +165,18 @@ Example:
 
     nginx_opts: "-p ."
 
-## Caveats
+## Important stuff to do
 
-It assumes it can run `nginx -c $nginx_conf -s reload` to reload nginx.
+Installation is not really implemented yet, you just have to manually copy the contents of `lib/` around if you want to install it.
+
+Shelling out to `nginx` and `docker` with `system()` results in pollution of stdout/stderr, should use `IPC::Run` instead.
+
+The code that rewrites `nginx.conf` is really bad. It will strip all your comments. If the "server" directives under your "upstream"
+look a bit funny then it will mess up the file in confusing ways.
+
+Config options should be listed in a more-sensible order in the documentation.
+
+## Caveats
 
 It operates Docker by running `docker run ...` etc. rather than using the API.
 
@@ -179,14 +188,12 @@ It assumes your upstream directive looks basically like this:
 
 In particular, it is currently hard-coded to require "http://127.0.0.1:" before the port number.
 
-Installation is not really implemented yet, you just have to manually copy the contents of `lib/` around if you want to install it.
+## Future improvements
 
-Shelling out to `nginx` and `docker` results in pollution of stdout/stderr.
+We'd want to support the use case where nginx is running inside docker and forwarding traffic to changing container names with
+a fixed port number, instead of always 127.0.0.1 with changing port numbers.
 
-The code that rewrites `nginx.conf` is really bad. It will strip all your comments. If the "server" directives under your "upstream"
-look a bit funny then it will mess up the file in confusing ways.
-
-We'd probably want to copy the docker config of the existing container instead of having to put everything in `docker_opts`, using
+We'd possibly want to copy the docker config of the existing container instead of having to put everything in `docker_opts`, using
 something like https://github.com/lavie/runlike
 
 It should perhaps be packaged as a Docker image that you then connect to your nginx config and docker socket, and perform a hot-deployment
@@ -195,8 +202,6 @@ with:
     $ docker run --rm -v ngindock.yaml:/ngindock.yaml -v /etc/nginx/conf.d/app.conf:/nginx.conf -v /var/run/docker.sock:/var/run/docker.sock ngindock
 
 Should probably have automated testing.
-
-Config options should be listed in a more-sensible order in the documentation.
 
 ## Contact
 
