@@ -10,13 +10,23 @@ Please see the "Caveats" section before wielding this against anything important
 
 ## Installation
 
-TODO: Update this to something more "production".
+First install the CPAN module dependencies, which are `Getopt::Long`, `IPC::Run`, `LWP::UserAgent`, and `YAML::XS`. On Ubuntu 20.04, you'll
+only have to:
 
-For now, just check out https://github.com/jes/ngindock in your home directory, and run it like:
+    $ sudo apt install libyaml-perl
 
-    $ PERL5LIB=lib ./ngindock
+Ngindock is packaged as a single Perl script file created by concatenating all the library files together with the program, look in `Makefile` to see
+how it works.
 
-CPAN module dependencies are `Getopt::Long`, `IPC::Run`, `LWP::UserAgent`, and `YAML::XS`.
+Install it with:
+
+    $ sudo make install
+
+Then you can run it with:
+
+    $ ngindock
+
+anywhere that has an `ngindock.yaml`.
 
 ## Usage
 
@@ -165,10 +175,6 @@ characters before being passed as multiple arguments.
 Example:
 
     nginx_opts: "-p ."
-
-## Important stuff to do
-
-Installation is not really implemented yet, you just have to manually copy the contents of `lib/` around if you want to install it.
 
 ## Caveats
 
