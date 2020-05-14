@@ -170,8 +170,6 @@ Example:
 
 Installation is not really implemented yet, you just have to manually copy the contents of `lib/` around if you want to install it.
 
-Shelling out to `nginx` and `docker` with `system()` results in pollution of stdout/stderr, should use `IPC::Run` instead.
-
 The code that rewrites `nginx.conf` is really bad. It will strip all your comments. If the "server" directives under your "upstream"
 look a bit funny then it will mess up the file in confusing ways.
 
@@ -186,6 +184,10 @@ It assumes your upstream directive looks basically like this:
     }
 
 In particular, it is currently hard-coded to require "http://127.0.0.1:" before the port number.
+
+If it gets stuck in a situation where the running container and the nginx config do not match (for
+example it bailed out partway through a previous attempt), you need to manually fix that before it
+will work.
 
 ## Future improvements
 

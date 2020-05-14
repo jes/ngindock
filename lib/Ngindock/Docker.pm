@@ -4,19 +4,7 @@ use strict;
 use warnings;
 
 use Ngindock::Log;
-use IPC::Run;
-
-sub execute {
-    my ($pkg, @cmd) = @_;
-
-    Ngindock::Log->log(2, "execute: [" . join(' ', @cmd) . "]");
-    my $output;
-    my $ok = IPC::Run::run(\@cmd, '>', \$output);
-    Ngindock::Log->log(2, " >> $_") for split /\n/, $output;
-    die "bad exit status from [" . join(' ', @cmd) . "]\n" if !$ok;
-
-    return $output;
-}
+use Ngindock::Run;
 
 sub run {
     my ($pkg, %opts) = @_;
@@ -29,25 +17,25 @@ sub run {
 
     push @cmd, $opts{image};
 
-    $pkg->execute(@cmd);
+    Ngindock::Run->execute(@cmd);
 }
 
 sub stop {
     my ($pkg, $container) = @_;
 
-    $pkg->execute("docker", "stop", $container);
+    Ngindock::Run->execute("docker", "stop", $container);
 }
 
 sub rm {
     my ($pkg, $container) = @_;
 
-    $pkg->execute("docker", "rm", $container);
+    Ngindock::Run->execute("docker", "rm", $container);
 }
 
 sub rename {
     my ($pkg, $oldname, $newname) = @_;
 
-    $pkg->execute("docker", "rename", $oldname, $newname);
+    Ngindock::Run->execute("docker", "rename", $oldname, $newname);
 }
 
 sub has_container {
@@ -57,7 +45,7 @@ sub has_container {
         "docker", "ps", "-q", "--filter=name=^/$name\$",
         ($opts{only_running} ? () : ('-a')),
     );
-    my $output = $pkg->execute(@cmd);;
+    my $output = Ngindock::Run->execute(@cmd);;
 
     return $output ? 1 : 0;
 }

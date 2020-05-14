@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Ngindock::Log;
+use Ngindock::Run;
 
 sub new {
     my ($pkg, %opts) = @_;
@@ -97,9 +98,7 @@ sub reload {
 
     my @extra_opts = split / /, ($self->{nginx_opts}||'');
 
-    my @cmd = ("nginx", @extra_opts, "-c", $self->{file}, "-s", "reload");
-    my $rv = system(@cmd);
-    die "bad exit status from [" . join(' ', @cmd) . "]\n" if $rv;
+    Ngindock::Run->execute("nginx", @extra_opts, "-c", $self->{file}, "-s", "reload");
 }
 
 1;
