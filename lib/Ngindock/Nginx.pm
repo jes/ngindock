@@ -6,14 +6,12 @@ use warnings;
 use Ngindock::Log;
 
 sub new {
-    my ($pkg, $file) = @_;
+    my ($pkg, %opts) = @_;
 
-    my $self = bless {}, $pkg;
+    my $self = bless \%opts, $pkg;
 
-    $self->{file} = $file;
-
-    if ($self->{file} !~ /^\//) {
-        warn "nginx_conf '$self->{file}' is a relative path";
+    if ($self->{file} !~ /^\// && !exists $self->{nginx_opts}) {
+        warn "warning: nginx_conf '$self->{file}' is a relative path (perhaps specify nginx_opts: '-p .'?)\n";
     }
 
     $self->load;
@@ -95,9 +93,11 @@ sub rewrite_upstream {
 }
 
 sub reload {
-    my ($self, $opts_str) = @_;
+    my ($self) = @_;
 
-    my @cmd = ("nginx", (split / /, $opts_str||''), "-c", $self->{file}, "-s", "reload");
+    my @extra_opts = split / /, ($self->{nginx_opts}||'');
+
+    my @cmd = ("nginx", @extra_opts, "-c", $self->{file}, "-s", "reload");
     my $rv = system(@cmd);
     die "bad exit status from [" . join(' ', @cmd) . "]\n" if $rv;
 }

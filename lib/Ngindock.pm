@@ -16,7 +16,10 @@ sub new {
 
     die "no cfg passed to Ngindock->new" if !$self->{cfg};
 
-    $self->{nginx} = Ngindock::Nginx->new($self->{cfg}{nginx_conf});
+    $self->{nginx} = Ngindock::Nginx->new(
+        file => $self->{cfg}{nginx_conf},
+        nginx_opts => $self->{cfg}{nginx_opts},
+    );
 
     return $self;
 }
@@ -46,7 +49,7 @@ sub run {
         # update nginx config to direct traffic to new container
         Ngindock::Log->log(1, "update nginx to direct traffic to port $new_port...");
         $self->{nginx}->rewrite_upstream($self->{cfg}{nginx_upstream}, $cur_port, $new_port);
-        $self->{nginx}->reload($self->{cfg}{nginx_opts});
+        $self->{nginx}->reload;
 
         # wait for existing sessions to stop going to old container?
         if ($self->{cfg}{grace_period}) {
