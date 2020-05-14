@@ -59,7 +59,32 @@ Add `-v` or `-v -v` to get more verbose output.
 
 ## Configuration
 
-The configuration is in a YAML file, by default read from `ngindock.yaml`.
+The configuration is in a YAML file, by default read from `ngindock.yaml`. Documentation here is grouped by
+required options first and optional options second, and sorted lexically within those groups.
+
+### container_name (required)
+
+The name to use for the Docker container to be created, and for the old container to be destroyed.
+
+Example:
+
+    container_name: app_container
+
+### container_port (required)
+
+The port number on your container that you want traffic to come to. Also see `ports`.
+
+Example:
+
+    container_port: 8080
+
+### image_name (required)
+
+The name of the Docker image to use when creating containers.
+
+Example:
+
+    image_name: app_image
 
 ### nginx_conf (required)
 
@@ -82,58 +107,20 @@ Example:
 
 The host port numbers you want to use to direct traffic to your application. Typically there would be
 exactly 2 here, but you are allowed to specify more than 2, and if you specify more then they'll
-be used in sequence.
+be used in sequence. Also see `container_port`.
 
 Example:
 
     ports: [3000,3001]
 
-### container_port (required)
+### docker_opts (optional)
 
-The port number on your container that you want traffic to come to.
-
-Example:
-
-    container_port: 8080
-
-### image_name (required)
-
-The name of the Docker image to use when creating containers.
+Extra parameters you want to pass to `docker run`. This will be split on space characters
+before being passed as multiple arguments.
 
 Example:
 
-    image_name: app_image
-
-### container_name (required)
-
-The name to use for the Docker container to be created, and for the old container to be destroyed.
-
-Example:
-
-    container_name: app_container
-
-### health_url (optional)
-
-The URL on your application to request to find out whether the application is healthy. Only
-when this URL starts returning a 200 status code will the nginx config be updated.
-
-If this field is not present, then the health check will be skipped.
-
-Example:
-
-    health_url: /
-
-### health_sleep (optional)
-
-A number of seconds to sleep before considering the new container healthy. If used in
-combination with `health_url`, then this will sleep *after* the URL starts returning
-200.
-
-If this field is not present, then no sleep will occur.
-
-Example:
-
-    health_sleep: 5
+    docker_opts: "--device=/dev/snd:/dev/snd"
 
 ### grace_period (optional)
 
@@ -147,14 +134,28 @@ Example:
 
     grace_period: 30
 
-### docker_opts (optional)
+### health_sleep (optional)
 
-Extra parameters you want to pass to `docker run`. This will be split on space characters
-before being passed as multiple arguments.
+A number of seconds to sleep before considering the new container healthy. If used in
+combination with `health_url`, then this will sleep *after* the URL starts returning
+200.
+
+If this field is not present, then no sleep will occur.
 
 Example:
 
-    docker_opts: "--device=/dev/snd:/dev/snd"
+    health_sleep: 5
+
+### health_url (optional)
+
+The URL on your application to request to find out whether the application is healthy. Only
+when this URL starts returning a 200 status code will the nginx config be updated.
+
+If this field is not present, then the health check will be skipped.
+
+Example:
+
+    health_url: /
 
 ### nginx_opts (optional)
 
@@ -173,8 +174,6 @@ Shelling out to `nginx` and `docker` with `system()` results in pollution of std
 
 The code that rewrites `nginx.conf` is really bad. It will strip all your comments. If the "server" directives under your "upstream"
 look a bit funny then it will mess up the file in confusing ways.
-
-Config options should be listed in a more-sensible order in the documentation.
 
 ## Caveats
 
