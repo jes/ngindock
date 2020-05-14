@@ -27,9 +27,6 @@ sub load {
         or die "can't read $self->{file}: $!\n";
     $self->{config_text} = join('', <$fh>);
     close $fh;
-
-    # remove comment lines
-    $self->{config_text} =~ s/.*#.*\n//g;
 }
 
 sub save {
@@ -45,50 +42,92 @@ sub save {
     rename("$self->{file}.tmp", $self->{file});
 }
 
+# read the nginx config and pass every detected upstream server to the callback, like:
+#   $cb->($line, $line_nocomment, $upstream, $server)
+# The callback must return a value to replace the line with (returning $line will leave
+# it unchanged).
+# For example, config like:
+#   upstream app {
+#       server 127.0.0.1:3000; # my server
+#   }
+# would result in a call like:
+#   $cb->(
+#       '    server 127.0.0.1:3000; # my server',
+#       '    server 127.0.0.1:3000; ',
+#       'app',
+#       '127.0.0.1:3000'
+#   );
+sub parse_upstreams {
+    my ($self, $cb) = @_;
+
+    my @lines = split /\n/, $self->{config_text};
+
+    my $in_upstream;
+
+    for my $i (0 .. $#lines) {
+        my $line = $lines[$i];
+        my $line_nocomment = $line;
+        $line_nocomment =~ s/#.*//;
+
+        if ($line_nocomment =~ /^\s*upstream\s*(\w+)\s*{/) {
+            $in_upstream = $1;
+        }
+        if ($line_nocomment =~ /^\s*}/) {
+            $in_upstream = undef;
+        }
+
+        if ($in_upstream && $line_nocomment =~ /^\s*server\s*([\w\.\:]+)\s*;/g) {
+            $lines[$i] = $cb->($line, $line_nocomment, $in_upstream, $1);
+        }
+    }
+
+    $self->{config_text} = join("\n", @lines) . "\n";
+}
+
 sub upstreams {
     my ($self, $upstream) = @_;
 
-    if ($self->{config_text} !~ /upstream\s*$upstream\s*{\s*([^}]*)\s*}/) {
-        die "can't find upstream $upstream in $self->{file}\n"
-    }
-    my $upstream_text = $1;
-
-    my @parts = split /;/, $upstream_text;
-
     my @upstreams;
-    for my $p (@parts) {
-        next if $p !~ /\S/;
-        $p =~ s/^\s*//; $p =~ s/\s*$//; $p =~ s/\s+/ /;
 
-        Ngindock::Log->log(2, "$self->{file}: upstream '$upstream': $p");
+    $self->parse_upstreams(sub {
+        my ($line, $line_nocomment, $line_upstream, $server) = @_;
 
-        if ($p =~ /server\s*127.0.0.1:(\d+)/) {
-            push @upstreams, $1;
-        } else {
-            Ngindock::Log->log(0, "$self->{file}: ignoring unrecognised upstream: $p");
+        Ngindock::Log->log(2, "$self->{file}: upstream '$upstream': server $server");
+
+        if ($line_upstream eq $upstream) {
+            if ($server =~ /127.0.0.1:(\d+)/) {
+                push @upstreams, $1;
+            } else {
+                Ngindock::Log->log(0, "$self->{file}: ignoring unrecognised server: $line");
+            }
         }
-    }
+
+        return $line;
+    });
+
+    die "can't find upstream $upstream in $self->{file}\n" if !@upstreams;
 
     return @upstreams;
 }
 
-# TODO: this function sucks and is fragile, rewrite it:
-#  1.) we should preserve comments that existed in the input
-#  2.) we should accept extra spaces after "server"
-#  3.) if substring isn't found with index() we rewrite random nonsense
 sub rewrite_upstream {
     my ($self, $upstream, $oldport, $newport) = @_;
 
-    if ($self->{config_text} !~ /upstream\s*$upstream\s*{/) {
-        die "can't find upstream $upstream in $self->{file}\n"
-    }
-    # $` is the text up to the regex match, aka $PREMATCH
-    my $ptr = length($`);
+    my $ok;
+    $self->parse_upstreams(sub {
+        my ($line, $line_nocomment, $line_upstream, $server) = @_;
 
-    # TODO: what if not found?
-    $ptr += index(substr($self->{config_text}, $ptr), "server 127.0.0.1:$oldport");
+        if ($line_upstream eq $upstream) {
+            if ($server =~ /127.0.0.1:$oldport$/) {
+                $line =~ s/127.0.0.1:$oldport/127.0.0.1:$newport/;
+                $ok = 1;
+            }
+        }
 
-    substr($self->{config_text}, $ptr, length("server 127.0.0.1:$oldport"), "server 127.0.0.1:$newport");
+        return $line;
+    });
+
+    die "can't find upstream $upstream in $self->{file}\n" if !$ok;
 
     $self->save;
 }

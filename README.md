@@ -170,9 +170,6 @@ Example:
 
 Installation is not really implemented yet, you just have to manually copy the contents of `lib/` around if you want to install it.
 
-The code that rewrites `nginx.conf` is really bad. It will strip all your comments. If the "server" directives under your "upstream"
-look a bit funny then it will mess up the file in confusing ways.
-
 ## Caveats
 
 It operates Docker by running `docker run ...` etc. rather than using the API.
