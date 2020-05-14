@@ -1,5 +1,8 @@
 This directory contains a (hopefully) working setup to demonstrate Ngindock.
 
+You might want to familiarise yourself with `ngindock.yaml` and `nginx.conf`
+in this directory so as to better understand what is going on.
+
 For the purposes of the demonstration we're using nginx_opts with "-p ." so
 that we can pass a relative path to the nginx configuration, but in real life
 you'll probably just use an absolute path and remove nginx_opts.
