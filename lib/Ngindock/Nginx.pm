@@ -118,7 +118,7 @@ sub rewrite_upstream {
         my ($line, $line_nocomment, $line_upstream, $server) = @_;
 
         if ($line_upstream eq $upstream) {
-            if ($server =~ /127.0.0.1:$oldport$/) {
+            if ($server eq "127.0.0.1:$oldport") {
                 $line =~ s/127.0.0.1:$oldport/127.0.0.1:$newport/;
                 $ok = 1;
             }
