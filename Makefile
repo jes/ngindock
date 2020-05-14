@@ -1,4 +1,4 @@
-build/ngindock: lib/Ngindock/*.pm lib/Ngindock.pm bin/ngindock
+build/ngindock: build.header lib/Ngindock/*.pm lib/Ngindock.pm bin/ngindock
 	mkdir -p build/
 	cat $^ | grep -v 'use Ngindock' > build/ngindock
 
