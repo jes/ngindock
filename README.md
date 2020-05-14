@@ -8,6 +8,13 @@ new one in its place.
 
 Please see the "Caveats" section before wielding this against anything important.
 
+## Who is it for?
+
+Ngindock is for you if you already run nginx as a reverse proxy and want to incrementally dockerise one or more services with a minimum of
+disruption.
+
+If you think traefik, kubernetes, or docker-swarm might be more appropriate for your use case, you're probably right.
+
 ## Installation
 
 First install the CPAN module dependencies, which are `Getopt::Long`, `IPC::Run`, `LWP::UserAgent`, and `YAML::XS`. On Ubuntu 20.04, you'll
