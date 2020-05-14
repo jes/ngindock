@@ -180,10 +180,10 @@ It operates Docker by running `docker run ...` etc. rather than using the API.
 It assumes your upstream directive looks basically like this:
 
     upstream app {
-        server http://127.0.0.1:3000;
+        server 127.0.0.1:3000;
     }
 
-In particular, it is currently hard-coded to require "http://127.0.0.1:" before the port number.
+In particular, it is currently hard-coded to require "127.0.0.1:" before the port number.
 
 If it gets stuck in a situation where the running container and the nginx config do not match (for
 example it bailed out partway through a previous attempt), you need to manually fix that before it
