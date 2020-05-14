@@ -7,6 +7,8 @@ you'll probably just use an absolute path and remove nginx_opts.
 We'll have nginx listening on port 3000, and our application container
 alternating between ports 3001 and 3002 with each deployment.
 
+This has been tested on Ubuntu 20.04 LTS.
+
 1. Install nginx, for example:
 
     $ sudo apt install nginx-light
