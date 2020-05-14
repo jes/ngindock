@@ -6,13 +6,16 @@ use warnings;
 use Ngindock::Log;
 use IPC::Run;
 
-# TODO: use IPC::Run so as not to spam stdout/stderr
 sub execute {
     my ($pkg, @cmd) = @_;
 
     Ngindock::Log->log(2, "execute: [" . join(' ', @cmd) . "]");
-    my $rv = system(@cmd);
-    die "bad exit status from [" . join(' ', @cmd) . "]\n" if $rv;
+    my $output;
+    my $ok = IPC::Run::run(\@cmd, '>', \$output);
+    Ngindock::Log->log(2, " >> $_") for split /\n/, $output;
+    die "bad exit status from [" . join(' ', @cmd) . "]\n" if !$ok;
+
+    return $output;
 }
 
 sub run {
@@ -54,10 +57,7 @@ sub has_container {
         "docker", "ps", "-q", "--filter=name=^/$name\$",
         ($opts{only_running} ? () : ('-a')),
     );
-    Ngindock::Log->log(2, "execute: [" . join(' ', @cmd) . "]");
-
-    my $output;
-    IPC::Run::run(\@cmd, '>', \$output);
+    my $output = $pkg->execute(@cmd);;
 
     return $output ? 1 : 0;
 }
