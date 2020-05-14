@@ -12,6 +12,4 @@ RUN apk update && \
 
 EXPOSE 3000
 
-HEALTHCHECK --interval=5s --timeout=2s CMD curl --silent --fail localhost:3000/ || exit 1
-
 CMD [ "./app", "daemon" ]
