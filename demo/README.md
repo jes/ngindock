@@ -16,49 +16,47 @@ This has been tested on Ubuntu 20.04 LTS.
 
     $ sudo apt install nginx-light
 
-2. Install any missing CPAN dependencies, for example:
+2. Install ngindock, see `../README.md`
 
-    $ sudo apt install libyaml-perl
-
-2. Build the docker image:
+3. Build the docker image:
 
     $ docker build -t ngindock_demo_app .
 
-3. Start nginx:
+4. Start nginx:
 
     $ ./start-nginx.sh
 
-4. Start the application:
+5. Start the application:
 
     $ docker run -d -p 3001:3000 ngindock_demo_app
 
 Alternatively, you can start it using Ngindock:
 
-    $ PERL5LIB=../lib ../ngindock -v -v
+    $ ngindock -v -v
 
-5. Check that the application is working, fetched through the nginx listening
+6. Check that the application is working, fetched through the nginx listening
 on port 3000:
 
     $ curl http://localhost:3000
     OK!
 
-6. Edit the application to send different content:
+7. Edit the application to send different content:
 
     $ sed -i 's/OK/Hello/' ./app
 
-7. Rebuild the docker image:
+8. Rebuild the docker image:
 
     $ docker build -t ngindock_demo_app .
 
-8. Use ngindock to switch over to the new image with no downtime:
+9. Use ngindock to switch over to the new image with no downtime:
 
-    $ PERL5LIB=../lib ../ngindock -v -v
+    $ ngindock -v -v
 
-9. Check that the application is still working and up-to-date:
+10. Check that the application is still working and up-to-date:
 
     $ curl http://localhost:3000
     Hello!
 
-10. When you're finished with nginx, you can stop it:
+11. When you're finished with nginx, you can stop it:
 
     $ ./stop-nginx.sh
