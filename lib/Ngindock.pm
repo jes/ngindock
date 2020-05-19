@@ -19,6 +19,7 @@ sub new {
     $self->{nginx} = Ngindock::Nginx->new(
         file => $self->{cfg}{nginx_conf},
         nginx_opts => $self->{cfg}{nginx_opts},
+        nginx_reload_cmd => $self->{cfg}{nginx_reload_cmd},
     );
 
     return $self;

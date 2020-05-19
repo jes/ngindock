@@ -183,6 +183,14 @@ Example:
 
     nginx_opts: "-p ."
 
+### nginx_reload_cmd (optional)
+
+Command to run to reload nginx. If this is used then `nginx_opts` will be ignored.
+
+Example:
+
+    nginx_reload_cmd: "systemctl reload nginx"
+
 ## Caveats
 
 It operates Docker by running `docker run ...` etc. rather than using the API.

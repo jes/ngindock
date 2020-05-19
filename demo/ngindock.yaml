@@ -6,3 +6,4 @@ container_port: 3000
 image_name: ngindock_demo_app
 container_name: ngindock_demo_app
 health_url: /
+nginx_reload_cmd: echo lol

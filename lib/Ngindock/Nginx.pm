@@ -11,8 +11,8 @@ sub new {
 
     my $self = bless \%opts, $pkg;
 
-    if ($self->{file} !~ /^\// && !exists $self->{nginx_opts}) {
-        warn "warning: nginx_conf '$self->{file}' is a relative path (perhaps specify nginx_opts: '-p .'?)\n";
+    if ($self->{file} !~ /^\// && !$self->{nginx_opts} && !$self->{nginx_reload_cmd}) {
+        warn "warning: nginx_conf '$self->{file}' is a relative path (perhaps specify nginx_opts: '-p .' or nginx_reload_cmd?)\n";
     }
 
     $self->load;
@@ -134,6 +134,11 @@ sub rewrite_upstream {
 
 sub reload {
     my ($self) = @_;
+
+    if ($self->{nginx_reload_cmd}) {
+        Ngindock::Run->execute("sh", "-c", $self->{nginx_reload_cmd});
+        return;
+    }
 
     my @extra_opts = split / /, ($self->{nginx_opts}||'');
 
