@@ -97,7 +97,7 @@ sub next_port {
     my ($self, $cur_port) = @_;
 
     my $cur_port_idx = $self->index_in_array($cur_port, @{ $self->{cfg}{ports} });
-    die "current port number $cur_port not allowed (expected one of " . join(',', @{ $self->{cfg}{ports} }) . "\n" if !defined $cur_port_idx;
+    die "current port number $cur_port not allowed (expected one of " . join(',', @{ $self->{cfg}{ports} }) . ")\n" if !defined $cur_port_idx;
     my $new_port_idx = ($cur_port_idx+1) % @{ $self->{cfg}{ports} };
     my $new_port = $self->{cfg}{ports}[$new_port_idx];
     Ngindock::Log->log(2, "new nginx port number: $new_port");
