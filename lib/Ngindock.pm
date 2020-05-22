@@ -146,7 +146,7 @@ sub start_new_container {
         extra_args => $self->{cfg}{docker_opts},
         name => $self->new_container_name,
         image => $self->{cfg}{image_name},
-        port => "$port:$self->{cfg}{container_port}",
+        port => "127.0.0.1:$port:$self->{cfg}{container_port}",
     );
     Ngindock::Log->log(1, "started container " . $self->new_container_name);
 }
